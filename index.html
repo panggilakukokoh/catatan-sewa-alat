@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Catatan Sewa Alat</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#F4F6F8;--card:#FFFFFF;--ink:#1A2332;--mute:#6B7785;--line:#E1E5EB;--acc:#3B82F6;--acc2:#60A5FA;--accink:#FFFFFF;--ok:#10B981;--bad:#EF4444;--head:#1E293B;--headink:#FFFFFF;--shadow:0 2px 8px rgba(0,0,0,0.06);--shadow-lg:0 4px 16px rgba(0,0,0,0.1);--radius:12px;--radius-sm:8px}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F172A;--card:#1E293B;--ink:#E2E8F0;--mute:#94A3B8;--line:#334155;--head:#020617}}
+:root[data-theme="dark"]{--bg:#0F172A;--card:#1E293B;--ink:#E2E8F0;--mute:#94A3B8;--line:#334155;--head:#020617}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;margin:0;font-weight:600;letter-spacing:-0.02em}
+header{background:linear-gradient(135deg,var(--head) 0%,#334155 100%);color:var(--headink);padding:20px 16px 0;border-radius:0 0 var(--radius) var(--radius);box-shadow:var(--shadow-lg)}
+header h1{font-size:22px;font-weight:700;margin-bottom:4px}
+header p{margin:0 0 12px;color:rgba(255,255,255,0.7);font-size:13px;font-weight:400}
+main{max-width:1000px;margin:0 auto;padding:16px}
+section{margin-bottom:24px}
+h2{font-size:16px;font-weight:600;margin-bottom:12px;color:var(--ink)}
+.banner{background:linear-gradient(135deg,#FEF3C7 0%,#FDE68A 100%);border-left:4px solid #F59E0B;color:#92400E;padding:12px 14px;margin-bottom:16px;border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:13px;box-shadow:var(--shadow)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.stat{background:var(--card);border-radius:var(--radius);padding:12px;box-shadow:var(--shadow);transition:transform 0.15s,box-shadow 0.15s;border:1px solid transparent;-webkit-tap-highlight-color:transparent}
+.stat:active{transform:scale(0.98)}
+.stat small{color:var(--mute);display:block;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px}
+.stat b{font:700 22px Inter,sans-serif}
+.stat.warn b{color:var(--bad)}
+.tools{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.tool{background:var(--card);border-radius:var(--radius);padding:12px;text-align:left;cursor:pointer;position:relative;box-shadow:var(--shadow);transition:transform 0.15s ease,box-shadow 0.15s ease;border:2px solid transparent}
+.tool::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--acc);opacity:0}
+.tool:hover{transform:translateY(-2px) scale(1.02);box-shadow:var(--shadow-lg);border-color:var(--acc2)}
+.tool:hover::before{opacity:1}
+.tool:active{transform:scale(0.98)}
+.tool h3{font-size:14px;font-weight:600;margin-bottom:2px}
+.tool .rate{color:var(--mute);font-size:11px}
+.tool .st{margin-top:6px;font-weight:600;font-size:10px;display:inline-flex;align-items:center;gap:4px}
+.tool .st::before{content:'';width:6px;height:6px;border-radius:50%}
+.tool .st.on{color:var(--bad)}.tool .st.on::before{background:var(--bad)}
+.tool .st.off{color:var(--ok)}.tool .st.off::before{background:var(--ok)}
+.tool .gear{position:absolute;top:6px;right:6px;background:var(--bg);border:1px solid var(--line);color:var(--mute);border-radius:4px;font-size:9px;padding:2px 6px;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.tool .gear:hover{background:var(--acc);color:white;border-color:var(--acc)}
+.tool .gear:active{transform:scale(0.95)}
+.add{border:2px dashed var(--line);display:flex;align-items:center;justify-content:center;color:var(--mute);min-height:70px;font-weight:600;border-radius:var(--radius);transition:all 0.15s;font-size:12px}
+.add:hover{border-color:var(--acc);color:var(--acc);background:rgba(59,130,246,0.05)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.btn{background:var(--acc);color:var(--accink);border:0;border-radius:var(--radius-sm);padding:8px 14px;font:600 13px Inter,sans-serif;cursor:pointer;transition:background 0.15s,transform 0.1s;box-shadow:0 2px 4px rgba(59,130,246,0.3);-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.btn:hover{background:var(--acc2)}
+.btn:active{transform:scale(0.97)}
+.btn.sec{background:var(--card);color:var(--ink);border:1px solid var(--line);box-shadow:none}
+.btn.sec:active{background:var(--bg)}
+.btn.danger{background:transparent;color:var(--bad);border:1px solid var(--bad)}
+.btn.danger:active{background:var(--bad);color:white}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:12px}
+.bar h2{flex:1 1 100%}
+.bar .btn-wrap{display:flex;gap:8px;flex-wrap:wrap}
+.list{display:flex;flex-direction:column;gap:10px}
+.row{background:var(--card);border-radius:var(--radius);padding:12px 14px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow);transition:all 0.2s;border:1px solid transparent}
+.row:hover{box-shadow:var(--shadow-lg)}
+.row-header{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;flex-wrap:wrap}
+.row .t{font-weight:600;font-size:14px}.row .s{color:var(--mute);font-size:12px}
+.row .amt{text-align:right;font-weight:700;font-size:15px}
+.row .amt .s{text-align:right}
+.chip{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;padding:3px 8px;border-radius:20px;margin-left:6px;text-transform:uppercase}
+.chip.lunas{background:rgba(16,185,129,0.15);color:#059669}.chip.dp{background:rgba(245,158,11,0.15);color:#D97706}.chip.belum{background:rgba(239,68,68,0.15);color:#DC2626}
+.acts{display:flex;gap:6px;flex-wrap:wrap;padding-top:10px;border-top:1px solid var(--line);margin-top:4px}
+.acts button{font-size:11px;padding:6px 10px}
+.empty{color:var(--mute);padding:24px;text-align:center;border:1px dashed var(--line);border-radius:var(--radius);font-size:13px}
+dialog{border:0;border-radius:var(--radius);padding:0;width:min(420px,94vw);background:var(--card);color:var(--ink);box-shadow:var(--shadow-lg);max-height:90vh;overflow-y:auto}
+dialog::backdrop{background:rgba(15,23,42,0.7);backdrop-filter:blur(4px)}
+form{padding:16px;display:flex;flex-direction:column;gap:12px}
+form h2{font-size:18px;margin-bottom:2px}
+label{display:flex;flex-direction:column;font-size:13px;font-weight:600;gap:4px;color:var(--ink)}
+input,select{font:inherit;padding:10px 12px;border:2px solid var(--line);border-radius:var(--radius-sm);background:var(--bg);color:var(--ink);width:100%;transition:border-color 0.2s,box-shadow 0.2s}
+input:focus,select:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(59,130,246,0.15)}
+input::placeholder{color:var(--mute)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sum{background:linear-gradient(135deg,rgba(59,130,246,0.08) 0%,rgba(96,165,250,0.08) 100%);border-radius:var(--radius-sm);padding:12px;font-size:13px;border-left:3px solid var(--acc)}
+.err{color:var(--bad);font-weight:600;font-size:12px;min-height:1px}
+.fa{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;padding-top:8px}
+.note{color:var(--mute);font-size:12px;line-height:1.5}
+.tabs{display:flex;gap:2px;margin-top:8px}
+.tabs button{background:transparent;color:rgba(255,255,255,0.6);border:0;border-bottom:3px solid transparent;font:600 13px Inter,sans-serif;padding:8px 12px;cursor:pointer;transition:all 0.2s;border-radius:var(--radius-sm) var(--radius-sm) 0 0}
+.tabs button:hover{color:rgba(255,255,255,0.9)}
+.tabs button[aria-selected="true"]{color:#FFFFFF;border-bottom-color:var(--acc);background:rgba(255,255,255,0.1)}
+.tabs button:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.ctl{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.ctl label{min-width:120px;flex-direction:row;align-items:center;gap:6px;font-weight:500;font-size:12px}
+.ctl select{padding:6px 10px;width:auto}
+.cc{background:var(--card);border-radius:var(--radius);padding:14px;margin-bottom:12px;box-shadow:var(--shadow)}
+.cc h3{font-size:14px;margin-bottom:10px;color:var(--ink)}
+.cc svg{width:100%;height:auto;display:block;max-height:200px}
+.cc .gl{stroke:var(--line);stroke-width:1}
+.cc .ln{fill:none;stroke:var(--acc);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.cc .ar{fill:var(--acc);opacity:0.1}
+.cc .dt{fill:var(--acc);stroke:var(--card);stroke-width:2}
+.cc text{fill:var(--mute);font:10px system-ui,sans-serif}
+.cc text.vl{fill:var(--ink);font-weight:600}
+@media(max-width:640px){
+header{padding:16px 12px 0}
+header h1{font-size:20px}
+main{padding:12px}
+section{margin-bottom:20px}
+h2{font-size:15px;margin-bottom:10px}
+.stats{grid-template-columns:repeat(2,1fr);gap:8px}
+.stat{padding:10px}
+.stat small{font-size:9px}
+.stat b{font-size:18px}
+.tools{grid-template-columns:1fr 1fr;gap:10px}
+.tool{padding:10px}
+.tool h3{font-size:13px}
+.tool .gear{top:6px;right:6px;font-size:9px;padding:2px 6px}
+.row{padding:10px 12px}
+.row .t{font-size:13px}
+.row .amt{font-size:14px}
+.acts{justify-content:flex-start}
+.acts button{min-width:0;flex:1 1 auto;padding:6px 8px;font-size:10px}
+.bar{flex-direction:column;align-items:stretch}
+.bar h2{margin-bottom:8px}
+.bar .btn-wrap{justify-content:flex-start}
+dialog{width:100%;max-width:100%;border-radius:var(--radius) var(--radius) 0 0;margin:auto 0 0 0}
+form{padding:14px;gap:10px}
+form h2{font-size:16px}
+label{font-size:12px}
+input,select{padding:9px 10px;font-size:14px}
+.two{grid-template-columns:1fr}
+.sum{padding:10px;font-size:12px}
+.btn{font-size:12px;padding:8px 12px}
+.tabs button{font-size:12px;padding:8px 10px}
+.cc{padding:12px}
+.cc h3{font-size:13px}
+.ctl{flex-direction:column}
+.ctl label{min-width:100%}
+.tools{grid-template-columns:repeat(2,1fr);gap:8px}
+.tool{padding:10px}
+.tool h3{font-size:13px}
+.tool .rate{font-size:10px}
+.tool .gear{top:4px;right:4px;font-size:8px;padding:2px 5px}
+}
+@media(max-width:380px){
+.stats{grid-template-columns:1fr 1fr}
+.tools{grid-template-columns:1fr 1fr;gap:6px}
+.tool{padding:8px}
+.tool h3{font-size:12px}
+.tool .gear{top:4px;right:4px;font-size:8px}
+.stat small{font-size:8px}
+.stat b{font-size:16px}
+.chip{font-size:9px;padding:2px 6px}
+}
+@media(max-width:320px){
+.tools{grid-template-columns:1fr}
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+<header><h1>Catatan Sewa Alat</h1><p>Klik alat, isi tanggal, tercatat otomatis.</p><div class="tabs" role="tablist"><button role="tab" aria-selected="true" data-tab="catat">Catat sewa</button><button role="tab" aria-selected="false" data-tab="perf">Performa</button></div></header>
+<main id="v-catat">
+<div id="banner"></div>
+<section><h2>Ringkasan bulan ini</h2><div class="stats" id="stats"></div></section>
+<section><h2>Pilih alat yang disewa</h2><div class="tools" id="tools"></div></section>
+<section>
+<div class="bar"><h2 style="margin:0">Riwayat sewa</h2><button class="btn sec" id="dl">Unduh Excel / CSV</button></div>
+<div class="bar"><div class="ctl" style="margin:0"><button class="btn" id="va">Aktif</button><button class="btn sec" id="vz">Arsip</button></div><button class="btn sec" id="ba">Arsipkan yang lunas</button></div>
+<div class="list" id="list"></div>
+<p class="note">Data tersimpan di browser perangkat ini saja. Unduh Excel secara rutin sebagai cadangan.</p>
+</section>
+</main>
+<main id="v-perf" hidden></main>
+<dialog id="dlg"></dialog>
+<script>
+(function(){
+var KEY="rental-alat-v1",BK="rental-alat-backup";
+var st={tools:[{id:"t1",name:"Molen 1",rate:350000},{id:"t2",name:"Molen 2",rate:350000},{id:"t3",name:"Vibrator",rate:150000}],rentals:[]};
+try{var raw=localStorage.getItem(KEY);if(raw){var p=JSON.parse(raw);if(p&&p.tools&&p.rentals)st=p;}}catch(e){}
+st.biz=st.biz||{};if(!st.biz.name)st.biz.name="FIRZA JAYA TEKNIK";if(!st.biz.contact)st.biz.contact="Telp/WA: 085282832520";
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st));}catch(e){}}
+function uid(){return Math.random().toString(36).slice(2,9);}
+function pad(n){return n<10?"0"+n:""+n;}
+function today(){var d=new Date();return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());}
+function rp(n){return "Rp "+Math.round(n||0).toLocaleString("id-ID");}
+function days(s,e){return Math.round((new Date(e+"T00:00:00")-new Date(s+"T00:00:00"))/864e5)+1;}
+function total(r){return days(r.start,r.end)*r.rate+(r.delivery||0);}
+function fd(s){var a=s.split("-");return a[2]+"/"+a[1]+"/"+a[0];}
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+function tool(id){return st.tools.filter(function(t){return t.id===id;})[0];}
+function active(tid){var t=today();return st.rentals.filter(function(r){return r.toolId===tid&&r.start<=t&&r.end>=t;})[0];}
+function upcoming(tid){var t=today();return st.rentals.filter(function(r){return r.toolId===tid&&r.start>t;}).sort(function(a,b){return a.start<b.start?-1:1;})[0];}
+function $(i){return document.getElementById(i);}
+var dlg=$("dlg");
+var av=false;
+function isArch(r){return !!r.arch&&total(r)-(r.paid||0)<=0;}
+function render(){
+var m=today().slice(0,7),mr=st.rentals.filter(function(r){return r.start.slice(0,7)===m;});
+var inc=0,paid=0;mr.forEach(function(r){inc+=total(r);paid+=r.paid||0;});
+var owed=0;st.rentals.forEach(function(r){owed+=Math.max(0,total(r)-(r.paid||0));});
+var busy=st.tools.filter(function(t){return active(t.id);}).length;
+$("stats").innerHTML=s("Pemasukan (nilai sewa)",rp(inc))+s("Sudah diterima",rp(paid))+s("Transaksi",mr.length)+s("Alat sedang disewa",busy+" dari "+st.tools.length)+'<div class="stat '+(owed>0?"warn":"")+'"><small>Total belum dibayar (semua waktu)</small><b>'+rp(owed)+"</b></div>";
+function s(a,b){return '<div class="stat"><small>'+a+"</small><b>"+b+"</b></div>";}
+var h="";
+st.tools.forEach(function(t){var a=active(t.id),u=upcoming(t.id),txt;if(a)txt='<div class="st on">Disewa sampai '+fd(a.end)+"</div>";else txt='<div class="st off">Tersedia'+(u?" (booking "+fd(u.start)+")":"")+"</div>";h+='<div class="tool" role="button" tabindex="0" data-rent="'+t.id+'"><h3>'+esc(t.name)+'</h3><div class="rate">'+rp(t.rate)+" / hari</div>"+txt+'<button class="gear" data-edit="'+t.id+'">Ubah</button></div>';});
+h+='<button class="tool add" data-addtool="1">+ Tambah alat</button>';
+$("tools").innerHTML=h;
+var na=0,nz=0;st.rentals.forEach(function(r){if(isArch(r))nz++;else na++;});
+$("va").textContent="Aktif ("+na+")";$("vz").textContent="Arsip ("+nz+")";
+$("va").className="btn "+(av?"sec":"");$("vz").className="btn "+(av?"":"sec");$("ba").hidden=av;
+var rs=st.rentals.filter(function(r){return isArch(r)===av;}).sort(function(a,b){return a.start<b.start?1:-1;});
+if(!rs.length)$("list").innerHTML='<div class="empty">'+(av?"Arsip kosong. Catatan yang sudah lunas bisa dipindahkan ke sini lewat tombol Arsipkan.":"Belum ada catatan. Klik salah satu alat di atas untuk mulai.")+'</div>';else $("list").innerHTML=rs.map(function(r){var t=tool(r.toolId),tot=total(r),sisa=tot-(r.paid||0),c=sisa<=0?"lunas":(r.paid>0?"dp":"belum"),l=sisa<=0?"Lunas":(r.paid>0?"DP":"Belum bayar");return '<div class="row"><div class="row-header"><div><div class="t">'+esc(t?t.name:"(alat dihapus)")+" - "+esc(r.customer)+'<span class="chip '+c+'">'+l+'</span></div><div class="s">'+fd(r.start)+" s/d "+fd(r.end)+" ("+days(r.start,r.end)+" hari)"+(r.note?" | "+esc(r.note):"")+'</div></div><div class="amt">'+rp(tot)+'<div class="s">'+(sisa>0?"Sisa "+rp(sisa):"Terbayar")+'</div></div></div><div class="acts">'+(sisa>0?'<button class="btn" data-pay="'+r.id+'">Catat bayar</button>':'<button class="btn" data-inv="'+r.id+'">Invoice</button>')+(sisa<=0?(r.arch?'<button class="btn sec" data-unarch="'+r.id+'">Kembalikan</button>':'<button class="btn sec" data-arch="'+r.id+'">Arsipkan</button>'):'')+'<button class="btn sec" data-redit="'+r.id+'">Ubah</button><button class="btn danger" data-del="'+r.id+'">Hapus</button></div></div>';}).join("");banner();}
+function banner(){var b="";try{b=localStorage.getItem(BK)||"";}catch(e){}var msg="";if(st.rentals.length){if(!b)msg="Data belum pernah dicadangkan. Klik <b>Unduh Excel / CSV</b> supaya tidak hilang kalau browser dibersihkan.";else if((Date.now()-Number(b))>7*864e5)msg="Cadangan terakhir lebih dari 7 hari lalu. Sebaiknya unduh lagi.";}$("banner").innerHTML=msg?'<div class="banner">'+msg+"</div>":"";}
+function open(html){dlg.innerHTML=html;if(!dlg.open)dlg.showModal();}
+function close(){dlg.close();}
+function rentForm(toolId,rid){var r=rid?st.rentals.filter(function(x){return x.id===rid;})[0]:null,t=tool(toolId);var v=r||{toolId:toolId,customer:"",start:today(),end:today(),rate:t.rate,delivery:0,paid:0,note:"",phone:""};open('<form id="f"><h2>'+esc(t.name)+(r?" - ubah sewa":"")+'</h2><label>Nama pelanggan<input id="c" required value="'+esc(v.customer)+'"></label><div class="two"><label>Tanggal mulai<input type="date" id="s" required value="'+v.start+'"></label><label>Tanggal selesai<input type="date" id="e" required value="'+v.end+'"></label></div><div class="two"><label>Tarif per hari (Rp)<input type="number" id="ra" min="0" inputmode="numeric" value="'+v.rate+'"></label><label>Ongkos antar (Rp)<input type="number" id="d" min="0" inputmode="numeric" value="'+(v.delivery||0)+'"></label></div><label>Dibayar sekarang / DP (Rp)<input type="number" id="p" min="0" inputmode="numeric" value="'+(v.paid||0)+'"></label><label>Catatan / lokasi proyek<input id="n" value="'+esc(v.note)+'"></label><label>No. WhatsApp pelanggan (opsional)<input id="ph" type="tel" inputmode="tel" placeholder="08123456789" value="'+esc(v.phone||"")+'"></label><div class="sum" id="sum"></div><div class="err" id="er"></div><div class="fa"><button type="button" class="btn sec" id="x">Batal</button><button class="btn" type="submit">Simpan</button></div></form>');function g(i){return $(i).value;}function calc(){var s=g("s"),e=g("e");if(!s||!e||e<s){$("sum").textContent="Tanggal selesai harus sama atau setelah tanggal mulai.";return null;}var o={toolId:toolId,customer:g("c").trim(),start:s,end:e,rate:+g("ra")||0,delivery:+g("d")||0,paid:+g("p")||0,note:g("n").trim(),phone:g("ph").trim()};var tot=total(o);$("sum").innerHTML=days(s,e)+" hari. Total <b>"+rp(tot)+"</b>. Sisa <b>"+rp(Math.max(0,tot-o.paid))+"</b>.";return o;}["c","s","e","ra","d","p","n","ph"].forEach(function(i){$(i).addEventListener("input",calc);});calc();$("x").onclick=close;$("f").onsubmit=function(ev){ev.preventDefault();var o=calc();if(!o)return;var clash=st.rentals.filter(function(x){return x.toolId===toolId&&(!r||x.id!==r.id)&&x.start<=o.end&&o.start<=x.end;})[0];if(clash){$("er").textContent="Bentrok: "+t.name+" sudah disewa "+clash.customer+" tanggal "+fd(clash.start)+" s/d "+fd(clash.end)+".";return;}var was=r&&total(r)-(r.paid||0)<=0,rec;if(r){Object.assign(r,o);rec=r;}else{o.id=uid();st.rentals.push(o);rec=o;}save();close();render();if(!was&&total(rec)-(rec.paid||0)<=0)invoice(rec.id);};}
+function toolForm(id){var t=id?tool(id):{name:"",rate:0};open('<form id="f"><h2>'+(id?"Ubah alat":"Tambah alat")+'</h2><label>Nama alat<input id="a" required value="'+esc(t.name)+'"></label><label>Tarif default per hari (Rp)<input id="b" type="number" min="0" inputmode="numeric" value="'+t.rate+'"></label><p class="note">Mengubah tarif tidak mengubah catatan sewa yang sudah ada.</p><div class="fa">'+(id?'<button type="button" class="btn danger" id="dd">Hapus alat</button>':"")+'<button type="button" class="btn sec" id="x">Batal</button><button class="btn" type="submit">Simpan</button></div></form>');$("x").onclick=close;if(id)$("dd").onclick=function(){var n=st.rentals.filter(function(r){return r.toolId===id;}).length;if(n){$("dd").textContent="Alat punya "+n+" catatan, tidak bisa dihapus";$("dd").disabled=true;return;}st.tools=st.tools.filter(function(x){return x.id!==id;});save();close();render();};$("f").onsubmit=function(ev){ev.preventDefault();var nm=$("a").value.trim(),rt=+$("b").value||0;if(id){t.name=nm;t.rate=rt;}else st.tools.push({id:uid(),name:nm,rate:rt});save();close();render();};}
+function payForm(rid){var r=st.rentals.filter(function(x){return x.id===rid;})[0],sisa=total(r)-(r.paid||0);open('<form id="f"><h2>Catat pembayaran</h2><p style="margin:0">'+esc(r.customer)+". Sisa "+rp(sisa)+'</p><label>Jumlah dibayar (Rp)<input id="a" type="number" min="1" inputmode="numeric" value="'+sisa+'" required></label><div class="fa"><button type="button" class="btn sec" id="x">Batal</button><button class="btn" type="submit">Simpan</button></div></form>');$("x").onclick=close;$("f").onsubmit=function(ev){ev.preventDefault();r.paid=(r.paid||0)+(+$("a").value||0);save();close();render();if(total(r)-r.paid<=0)invoice(r.id);};}
+function delForm(rid){open('<form id="f"><h2>Hapus catatan ini?</h2><p style="margin:0">Catatan yang dihapus tidak bisa dikembalikan.</p><div class="fa"><button type="button" class="btn sec" id="x">Batal</button><button class="btn danger" type="submit">Hapus</button></div></form>');$("x").onclick=close;$("f").onsubmit=function(ev){ev.preventDefault();st.rentals=st.rentals.filter(function(r){return r.id!==rid;});save();close();render();};}
+function csv(){var q=function(v){v=String(v==null?"":v);return '"'+v.replace(/"/g,'""')+'"';};var rows=[["Tanggal mulai","Tanggal selesai","Alat","Pelanggan","Lama (hari)","Tarif/hari","Ongkos antar","Total","Dibayar","Sisa","Status","Catatan"]];st.rentals.slice().sort(function(a,b){return a.start<b.start?-1:1;}).forEach(function(r){var t=tool(r.toolId),tot=total(r),sisa=Math.max(0,tot-(r.paid||0));rows.push([r.start,r.end,t?t.name:"",r.customer,days(r.start,r.end),r.rate,r.delivery||0,tot,r.paid||0,sisa,sisa===0?"Lunas":(r.paid>0?"DP":"Belum bayar"),r.note]);});return "﻿"+rows.map(function(r){return r.map(q).join(",");}).join("\r\n");}
+function dlCsv(){var name="sewa-alat-"+today()+".csv";if(window.claude&&claude.use){claude.use("downloads").then(function(d){if(!d){alert("Unduh tidak tersedia di tampilan ini.");return;}return d.save({filename:name,data:csv()}).then(function(){try{localStorage.setItem(BK,String(Date.now()));}catch(e){}banner();}).catch(function(){});}).catch(function(){alert("Unduh gagal. Coba lagi.");});}else alert("Unduh tidak tersedia di tampilan ini.");};
+function buildXlsx(y){var wb=XLSX.utils.book_new(),H=["Tanggal mulai","Tanggal selesai","Alat","Pelanggan","Lama (hari)","Tarif/hari","Ongkos antar","Total","Dibayar","Sisa","Status","No. invoice","No. WhatsApp","Catatan"];MN.forEach(function(mn,m){var rs=st.rentals.filter(function(r){return +r.start.slice(0,4)===y&&+r.start.slice(5,7)-1===m;}).sort(function(a,b){return a.start<b.start?-1:1;});var rows=[H],T=0,P=0,S=0;rs.forEach(function(r){var t=tool(r.toolId),tot=total(r),sisa=Math.max(0,tot-(r.paid||0));T+=tot;P+=r.paid||0;S+=sisa;rows.push([r.start,r.end,t?t.name:"",r.customer,days(r.start,r.end),r.rate,r.delivery||0,tot,r.paid||0,sisa,sisa===0?"Lunas":(r.paid>0?"DP":"Belum bayar"),r.inv||"",r.phone||"",r.note||""]);});rows.push(["","","","TOTAL",rs.length+" sewa","","",T,P,S,"","","",""]);var ws=XLSX.utils.aoa_to_sheet(rows);ws["!cols"]=[12,12,14,22,12,12,12,14,14,14,12,18,16,26].map(function(w){return {wch:w};});XLSX.utils.book_append_sheet(wb,ws,mn);});return XLSX.write(wb,{bookType:"xlsx",type:"array"});}
+$("dl").onclick=function(){if(!st.rentals.length){alert("Belum ada data untuk diunduh.");return;}var cy=+today().slice(0,4),yrs={};yrs[cy]=1;st.rentals.forEach(function(r){yrs[+r.start.slice(0,4)]=1;});var ys=Object.keys(yrs).sort();open('<form id="f"><h2>Unduh data</h2><label>Tahun<select id="yy">'+ys.map(function(y){return '<option'+(+y===cy?" selected":"")+'>'+y+'</option>';}).join("")+'</select></label><p class="note">File Excel berisi 12 sheet (Januari sampai Desember).</p><div class="err" id="er"></div><div class="fa"><button type="button" class="btn sec" id="x">Tutup</button><button type="button" class="btn sec" id="cs">CSV (semua data)</button><button type="button" class="btn" id="xl">Unduh Excel</button></div></form>');$("x").onclick=close;$("cs").onclick=function(){close();dlCsv();};$("xl").onclick=function(){var er=$("er"),y=+$("yy").value,buf;if(!window.XLSX){er.textContent="Pembuat Excel gagal dimuat.";return;}if(!(window.claude&&claude.use)){er.textContent="Unduh tidak tersedia.";return;}try{buf=buildXlsx(y);}catch(e){er.textContent="Gagal membuat file Excel.";return;}claude.use("downloads").then(function(d){if(!d){er.textContent="Unduh tidak tersedia.";return;}return d.save({filename:"sewa-alat-"+y+".xlsx",data:buf}).then(function(){try{localStorage.setItem(BK,String(Date.now()));}catch(e){}banner();close();});}).catch(function(e){if(e&&e.code==="declined")return;er.textContent="Unduh gagal.";});};};
+function setArch(id,v){var r=st.rentals.filter(function(x){return x.id===id;})[0];if(!r)return;r.arch=v;save();render();}
+$("va").onclick=function(){av=false;render();};
+$("vz").onclick=function(){av=true;render();};
+$("ba").onclick=function(){var cm=today().slice(0,7);var c=st.rentals.filter(function(r){return !isArch(r)&&total(r)-(r.paid||0)<=0&&r.end.slice(0,7)<cm;});if(!c.length){open('<form id="f"><h2>Tidak ada yang diarsipkan</h2><p style="margin:0">Belum ada catatan lunas yang selesai sebelum bulan ini.</p><div class="fa"><button type="button" class="btn" id="x">Tutup</button></div></form>');$("x").onclick=close;return;}open('<form id="f"><h2>Arsipkan '+c.length+' catatan?</h2><p style="margin:0">Yang diarsipkan: catatan lunas yang selesai sebelum bulan ini.</p><p class="note">Arsip tidak menghapus apa pun.</p><div class="fa"><button type="button" class="btn sec" id="x">Batal</button><button class="btn" type="submit">Arsipkan</button></div></form>');$("x").onclick=close;$("f").onsubmit=function(ev){ev.preventDefault();c.forEach(function(r){r.arch=true;});save();close();render();};};
+function onClick(ev){var el=ev.target.closest("[data-edit],[data-rent],[data-addtool],[data-pay],[data-redit],[data-del],[data-inv],[data-arch],[data-unarch]");if(!el)return;var d=el.dataset;if(d.edit!==undefined){ev.stopPropagation();toolForm(d.edit);}else if(d.rent)rentForm(d.rent);else if(d.addtool)toolForm();else if(d.pay)payForm(d.pay);else if(d.inv)invoice(d.inv);else if(d.arch)setArch(d.arch,true);else if(d.unarch)setArch(d.unarch,false);else if(d.redit){var r=st.rentals.filter(function(x){return x.id===d.redit;})[0];rentForm(r.toolId,r.id);}else if(d.del)delForm(d.del);}
+document.addEventListener("click",onClick);
+$("tools").addEventListener("keydown",function(ev){if((ev.key==="Enter"||ev.key===" ")&&ev.target.dataset&&ev.target.dataset.rent){ev.preventDefault();rentForm(ev.target.dataset.rent);}});
+var MN=["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+var py=+today().slice(0,4),pm=+today().slice(5,7)-1;
+function sh(n){return n>=1e6?(Math.round(n/1e5)/10).toString().replace(".",",")+" jt":(n>=1e3?Math.round(n/1e3)+" rb":String(n));}
+function nice(x){if(x<=0)return 1;var p=Math.pow(10,Math.floor(Math.log10(x))),f=x/p;return(f<=1?1:f<=2?2:f<=5?5:10)*p;}
+function chart(labels,vals,isMoney){var W=600,H=240,L=isMoney?52:34,R=16,T=20,B=30,n=vals.length,mx=Math.max.apply(null,vals.concat([0]));var step=nice(mx/4);if(!isMoney)step=Math.max(1,step);var top=step*Math.max(1,Math.ceil(mx/step));var X=function(i){return L+i*(W-L-R)/(n-1);},Y=function(v){return T+(H-T-B)*(1-v/top);};var g="",k;for(k=0;k<=top+1e-9;k+=step){g+='<line class="gl" x1="'+L+'" x2="'+(W-R)+'" y1="'+Y(k)+'" y2="'+Y(k)+'"/><text x="'+(L-6)+'" y="'+(Y(k)+4)+'" text-anchor="end">'+(isMoney?sh(k):k)+'</text>';}var pts=vals.map(function(v,i){return X(i)+","+Y(v);}).join(" ");var area=X(0)+","+Y(0)+" "+pts+" "+X(n-1)+","+Y(0);var d="";vals.forEach(function(v,i){d+='<text x="'+X(i)+'" y="'+(H-10)+'" text-anchor="middle">'+labels[i]+'</text>';d+='<circle class="dt" cx="'+X(i)+'" cy="'+Y(v)+'" r="4"/>';if(v>0)d+='<text class="vl" x="'+X(i)+'" y="'+(Y(v)-9)+'" text-anchor="middle">'+(isMoney?sh(v):v)+'</text>';});return '<svg viewBox="0 0 '+W+' '+H+'" role="img">'+g+'<polygon class="ar" points="'+area+'"/><polyline class="ln" points="'+pts+'"/>'+d+'</svg>';}
+function perf(){var yrs={};yrs[+today().slice(0,4)]=1;st.rentals.forEach(function(r){yrs[+r.start.slice(0,4)]=1;});var ys=Object.keys(yrs).sort();var yc=[],yi=[],i;for(i=0;i<12;i++){yc.push(0);yi.push(0);}var dim=new Date(py,pm+1,0).getDate(),nw=Math.ceil(dim/7),wc=[],wi=[];for(i=0;i<nw;i++){wc.push(0);wi.push(0);}st.rentals.forEach(function(r){var y=+r.start.slice(0,4),m=+r.start.slice(5,7)-1,dd=+r.start.slice(8,10);if(y!==py)return;yc[m]++;yi[m]+=total(r);if(m===pm){var w=Math.min(nw-1,Math.floor((dd-1)/7));wc[w]++;wi[w]+=total(r);}});var sum=function(a){return a.reduce(function(x,y){return x+y;},0);};var best=yi.indexOf(Math.max.apply(null,yi));var ml=MN.map(function(m){return m.slice(0,3);});var wl=wc.map(function(_,i){var a=i*7+1,b=Math.min(dim,a+6);return a+"-"+b;});$("v-perf").innerHTML='<div class="ctl"><label>Tahun<select id="py">'+ys.map(function(y){return '<option'+(+y===py?" selected":"")+'>'+y+'</option>';}).join("")+'</select></label><label>Bulan (untuk grafik mingguan)<select id="pm">'+MN.map(function(m,i){return '<option value="'+i+'"'+(i===pm?" selected":"")+'>'+m+'</option>';}).join("")+'</select></label></div>'+'<div class="stats" style="margin-bottom:14px"><div class="stat"><small>Sewa tahun '+py+'</small><b>'+sum(yc)+'</b></div><div class="stat"><small>Pemasukan tahun '+py+'</small><b>'+rp(sum(yi))+'</b></div><div class="stat"><small>Bulan terbaik</small><b>'+(sum(yi)>0?MN[best]:"-")+'</b></div><div class="stat"><small>Pemasukan '+MN[pm]+'</small><b>'+rp(sum(wi))+'</b></div></div>'+'<div class="cc"><h3>Jumlah sewa per bulan, '+py+'</h3>'+chart(ml,yc,false)+'</div>'+'<div class="cc"><h3>Pemasukan per bulan, '+py+'</h3>'+chart(ml,yi,true)+'</div>'+'<div class="cc"><h3>Jumlah sewa per minggu, '+MN[pm]+' '+py+'</h3>'+chart(wl,wc,false)+'<p class="note">Minggu dihitung per tanggal: 1-7, 8-14, dst.</p></div>'+'<div class="cc"><h3>Pemasukan per minggu, '+MN[pm]+' '+py+'</h3>'+chart(wl,wi,true)+'</div>'+'<p class="note">Sewa dan pemasukan dihitung pada tanggal mulai sewa.</p>';$("py").onchange=function(){py=+this.value;perf();};$("pm").onchange=function(){pm=+this.value;perf();};}
+function invBody(r){var t=tool(r.toolId),b=st.biz||{},d=days(r.start,r.end),tot=total(r),R="text-align:right;",C="padding:6px 0;border-bottom:1px solid #ddd";var rows='<tr><td style="'+C+'">Sewa '+esc(t?t.name:"alat")+'<br><span style="color:#666;font-size:12px">'+fd(r.start)+' s/d '+fd(r.end)+' ('+d+' hari x '+rp(r.rate)+')</span></td><td style="'+R+C+'">'+rp(d*r.rate)+'</td></tr>';if(r.delivery)rows+='<tr><td style="'+C+'">Ongkos antar</td><td style="'+R+C+'">'+rp(r.delivery)+'</td></tr>';return '<div style="background:#fff;color:#111;padding:18px;font:14px/1.4 Arial,sans-serif"><div style="font-size:20px;font-weight:700">'+esc(b.name||"Nama usaha Anda")+'</div><div style="color:#555">'+esc(b.contact||"")+'</div>'+'<div style="margin:14px 0 4px;font-weight:700;font-size:16px">INVOICE '+esc(r.inv)+'</div><div>Tanggal: '+fd(r.invDate)+'</div><div>Kepada: <b>'+esc(r.customer)+'</b></div>'+(r.note?'<div>Lokasi/Catatan: '+esc(r.note)+'</div>':'')+'<table style="width:100%;border-collapse:collapse;margin:12px 0">'+rows+'<tr><td style="padding:8px 0;font-weight:700">Total</td><td style="'+R+'padding:8px 0;font-weight:700">'+rp(tot)+'</td></tr><tr><td style="padding:2px 0">Dibayar</td><td style="'+R+'">'+rp(r.paid)+'</td></tr></table>'+'<div style="display:inline-block;border:3px solid #2F7D4F;color:#2F7D4F;font-weight:700;padding:2px 12px;transform:rotate(-4deg)">LUNAS</div><div style="margin-top:14px;color:#555">Terima kasih atas kepercayaan Anda.</div></div>';}
+function invText(r){var t=tool(r.toolId),b=st.biz||{},d=days(r.start,r.end),L=[];L.push("INVOICE "+r.inv);if(b.name)L.push(b.name);if(b.contact)L.push(b.contact);L.push("Tanggal: "+fd(r.invDate),"Kepada: "+r.customer,"");L.push("Sewa "+(t?t.name:"alat")+": "+fd(r.start)+" s/d "+fd(r.end)+" ("+d+" hari x "+rp(r.rate)+") = "+rp(d*r.rate));if(r.delivery)L.push("Ongkos antar: "+rp(r.delivery));L.push("TOTAL: "+rp(total(r)),"Dibayar: "+rp(r.paid),"Status: LUNAS","","Terima kasih atas kepercayaan Anda.");return L.join("\n");}
+function invoice(rid){var r=st.rentals.filter(function(x){return x.id===rid;})[0];if(!r)return;if(!r.inv){st.invSeq=(st.invSeq||0)+1;r.inv="INV-"+today().replace(/-/g,"").slice(0,6)+"-"+("00"+st.invSeq).slice(-3);r.invDate=today();}st.biz=st.biz||{name:"",contact:""};save();open('<form id="f"><h2>Invoice '+esc(r.inv)+'</h2><label>Nama usaha<input id="bn" value="'+esc(st.biz.name)+'"></label><label>Kontak usaha<input id="bc" value="'+esc(st.biz.contact)+'"></label><div id="pv" style="border:1px solid var(--line);border-radius:4px;max-height:45vh;overflow:auto"></div><div class="err" id="er"></div><textarea id="ta" rows="7" hidden style="width:100%"></textarea><div class="fa"><button type="button" class="btn sec" id="x">Tutup</button><button type="button" class="btn sec" id="cp">Salin teks</button><button type="button" class="btn sec" id="dw">Unduh HTML</button><a class="btn" id="wa" target="_blank" rel="noopener noreferrer" style="text-decoration:none" hidden>Kirim WhatsApp</a></div><p class="note">Salin teks, lalu tempel di WhatsApp.</p></form>');function paint(){$("pv").innerHTML=invBody(r);var ph=(r.phone||"").replace(/\D/g,"");if(ph){if(ph.charAt(0)==="0")ph="62"+ph.slice(1);$("wa").hidden=false;$("wa").href="https://wa.me/"+ph+"?text="+encodeURIComponent(invText(r));}}paint();$("bn").oninput=$("bc").oninput=function(){st.biz.name=$("bn").value.trim();st.biz.contact=$("bc").value.trim();save();paint();};$("cp").onclick=function(){var tx=invText(r),er=$("er");var fb=function(){var ta=$("ta");ta.hidden=false;ta.value=tx;ta.focus();ta.select();er.style.color="";er.textContent="Salin manual.";};try{navigator.clipboard.writeText(tx).then(function(){er.style.color="var(--ok)";er.textContent="Teks disalin.";},fb);}catch(e){fb();}};$("dw").onclick=function(){var html='<!DOCTYPE html><html lang="id"><head><meta charset="utf-8"><title>'+esc(r.inv)+'</title></head><body style="margin:0;background:#eee"><div style="max-width:560px;margin:0 auto">'+invBody(r)+'</div></body></html>';if(window.claude&&claude.use)claude.use("downloads").then(function(d){if(!d){$("er").textContent="Unduh tidak tersedia.";return;}return d.save({filename:"invoice-"+r.inv+".html",data:html}).catch(function(){});});};$("x").onclick=close;}
+var tabs=document.querySelectorAll("[data-tab]");Array.prototype.forEach.call(tabs,function(b){b.addEventListener("click",function(){var p=b.dataset.tab==="perf";$("v-catat").hidden=p;$("v-perf").hidden=!p;Array.prototype.forEach.call(tabs,function(x){x.setAttribute("aria-selected",x===b?"true":"false");});if(p)perf();else render();window.scrollTo(0,0);});});render();})();
+</script>
+</body>
+</html>
