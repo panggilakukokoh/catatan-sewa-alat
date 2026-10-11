@@ -3,7 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Catatan Sewa Alat</title>
+<meta name="theme-color" content="#1E293B">
+<meta name="description" content="Aplikasi pencatatan sewa alat untuk FIRZA JAYA TEKNIK">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="FIRZA JAYA TEKNIK">
+<title>FIRZA JAYA TEKNIK - Catatan Sewa Alat</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#F4F6F8;--card:#FFFFFF;--ink:#1A2332;--mute:#6B7785;--line:#E1E5EB;--acc:#3B82F6;--acc2:#60A5FA;--accink:#FFFFFF;--ok:#10B981;--bad:#EF4444;--head:#1E293B;--headink:#FFFFFF;--shadow:0 2px 8px rgba(0,0,0,0.06);--shadow-lg:0 4px 16px rgba(0,0,0,0.1);--radius:12px;--radius-sm:8px}
@@ -234,6 +241,34 @@ function invBody(r){var t=tool(r.toolId),b=st.biz||{},d=days(r.start,r.end),tot=
 function invText(r){var t=tool(r.toolId),b=st.biz||{},d=days(r.start,r.end),L=[];L.push("INVOICE "+r.inv);if(b.name)L.push(b.name);if(b.contact)L.push(b.contact);L.push("Tanggal: "+fd(r.invDate),"Kepada: "+r.customer,"");L.push("Sewa "+(t?t.name:"alat")+": "+fd(r.start)+" s/d "+fd(r.end)+" ("+d+" hari x "+rp(r.rate)+") = "+rp(d*r.rate));if(r.delivery)L.push("Ongkos antar: "+rp(r.delivery));L.push("TOTAL: "+rp(total(r)),"Dibayar: "+rp(r.paid),"Status: LUNAS","","Terima kasih atas kepercayaan Anda.");return L.join("\n");}
 function invoice(rid){var r=st.rentals.filter(function(x){return x.id===rid;})[0];if(!r)return;if(!r.inv){st.invSeq=(st.invSeq||0)+1;r.inv="INV-"+today().replace(/-/g,"").slice(0,6)+"-"+("00"+st.invSeq).slice(-3);r.invDate=today();}st.biz=st.biz||{name:"",contact:""};save();open('<form id="f"><h2>Invoice '+esc(r.inv)+'</h2><label>Nama usaha<input id="bn" value="'+esc(st.biz.name)+'"></label><label>Kontak usaha<input id="bc" value="'+esc(st.biz.contact)+'"></label><div id="pv" style="border:1px solid var(--line);border-radius:4px;max-height:45vh;overflow:auto"></div><div class="err" id="er"></div><textarea id="ta" rows="7" hidden style="width:100%"></textarea><div class="fa"><button type="button" class="btn sec" id="x">Tutup</button><button type="button" class="btn sec" id="cp">Salin teks</button><button type="button" class="btn sec" id="dw">Unduh HTML</button><a class="btn" id="wa" target="_blank" rel="noopener noreferrer" style="text-decoration:none" hidden>Kirim WhatsApp</a></div><p class="note">Salin teks, lalu tempel di WhatsApp.</p></form>');function paint(){$("pv").innerHTML=invBody(r);var ph=(r.phone||"").replace(/\D/g,"");if(ph){if(ph.charAt(0)==="0")ph="62"+ph.slice(1);$("wa").hidden=false;$("wa").href="https://wa.me/"+ph+"?text="+encodeURIComponent(invText(r));}}paint();$("bn").oninput=$("bc").oninput=function(){st.biz.name=$("bn").value.trim();st.biz.contact=$("bc").value.trim();save();paint();};$("cp").onclick=function(){var tx=invText(r),er=$("er");var fb=function(){var ta=$("ta");ta.hidden=false;ta.value=tx;ta.focus();ta.select();er.style.color="";er.textContent="Salin manual.";};try{navigator.clipboard.writeText(tx).then(function(){er.style.color="var(--ok)";er.textContent="Teks disalin.";},fb);}catch(e){fb();}};$("dw").onclick=function(){var html='<!DOCTYPE html><html lang="id"><head><meta charset="utf-8"><title>'+esc(r.inv)+'</title></head><body style="margin:0;background:#eee"><div style="max-width:560px;margin:0 auto">'+invBody(r)+'</div></body></html>';if(window.claude&&claude.use)claude.use("downloads").then(function(d){if(!d){$("er").textContent="Unduh tidak tersedia.";return;}return d.save({filename:"invoice-"+r.inv+".html",data:html}).catch(function(){});});};$("x").onclick=close;}
 var tabs=document.querySelectorAll("[data-tab]");Array.prototype.forEach.call(tabs,function(b){b.addEventListener("click",function(){var p=b.dataset.tab==="perf";$("v-catat").hidden=p;$("v-perf").hidden=!p;Array.prototype.forEach.call(tabs,function(x){x.setAttribute("aria-selected",x===b?"true":"false");});if(p)perf();else render();window.scrollTo(0,0);});});render();})();
+</script>
+<script>
+// Register Service Worker for PWA
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('sw.js')
+      .then(function(registration) {
+        console.log('SW registered:', registration.scope);
+
+        // Check for updates
+        registration.addEventListener('updatefound', function() {
+          var newWorker = registration.installing;
+          newWorker.addEventListener('statechange', function() {
+            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              // New content available, show prompt to refresh
+              if (confirm('Update tersedia! Klik OK untuk memuat versi terbaru.')) {
+                newWorker.postMessage({ type: 'SKIP_WAITING' });
+                window.location.reload();
+              }
+            }
+          });
+        });
+      })
+      .catch(function(error) {
+        console.log('SW registration failed:', error);
+      });
+  });
+}
 </script>
 </body>
 </html>
